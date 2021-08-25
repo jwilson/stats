@@ -1,0 +1,25 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-2 d-none d-md-block">
+        <ul class="list-group list-group-flush">
+            {% block sideitems %}
+            {% include "core/_widgets/sideitem.html" with title="Items" count=1 %}
+            {% include "core/_widgets/sideitem.html" with title="Collections" count=15 %}
+            {% include "core/_widgets/sideitem.html" with title="Categories" %}
+            {% endblock %}
+        </ul>
+    </div>
+    <div class="col-12 col-md-10">
+        <div class="d-flex flex-row-reverse mb-2">
+            {% block actions %}
+            {% endblock %}
+        </div>
+        <div class="row">
+            {% block sectioncontent %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

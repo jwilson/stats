@@ -1,0 +1,55 @@
+<pre>
+using System.Collections.Generic;
+using CC.Scripts.Defs;
+using CC.Scripts.Items;
+using UnityEngine;
+using UnityEditor;
+
+namespace CC.Scripts
+{
+    public class GameDBAssetCreator : MonoBehaviour
+    {
+
+        [SerializeField] private ItemSO itemSOPrefab;
+        private List&lt;ItemSO&gt; items = new List&lt;ItemSO&gt;();
+
+        private void Awake()
+        {
+            Init();
+        }
+
+        private void Init()
+        {
+            {% for object in object_list %}
+            CreateAsset("{{ object.prefab_path}}", "{{ object.name|cut:" " }}", {{ object.id }}, {{ object.level }}, {{ object.weight }}f, ItemDef.Weapon, (WeaponDef){{ object.kind }});
+            {% endfor %}
+        }
+
+        private void CreateAsset(string prefabPath, string name, int id, int level, float weight, ItemDef itemDef, WeaponDef weaponDef)
+        {
+            var assetPath = $"Assets/POLYGON/{ prefabPath }";
+            var asset = ScriptableObject.CreateInstance&lt;ItemSO&gt;();
+            var gameAssetPath = $"Assets/CC/Resources/Items/Weapons/{ name }_LVL#{ level }_ID#{ id }.asset";
+            var pathAndName = AssetDatabase.GenerateUniqueAssetPath(gameAssetPath);
+
+            var assetPrefabContents = PrefabUtility.LoadPrefabContents(assetPath);
+            Debug.Log(assetPrefabContents.GetComponent&lt;MeshCollider&gt;());
+            Destroy(assetPrefabContents.GetComponent&lt;MeshCollider&gt;());
+
+            PrefabUtility.SaveAsPrefabAsset(assetPrefabContents, assetPath);
+            PrefabUtility.UnloadPrefabContents(assetPrefabContents);
+
+            var assetPrefab = (GameObject)AssetDatabase.LoadMainAssetAtPath(assetPath);
+
+            asset.prefab = assetPrefab;
+            asset.name = name;
+            asset.weight = weight;
+            asset.itemDef = itemDef;
+            asset.weaponDef = weaponDef;
+            asset.id = id;
+
+            AssetDatabase.CreateAsset(asset, pathAndName);
+        }
+    }
+}
+</pre>

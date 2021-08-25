@@ -1,0 +1,67 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>gamedb</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/025b11d5c0.js" crossorigin="anonymous"></script>
+    <style>
+      .bg-danger-light90 { background-color: #FF8F9F !important; }
+      .bg-success-light90 { background-color: #73E1AE !important; }
+      .bg-primary-light90 { background-color: #67C8FF !important; }
+      .bg-dark-light90 { background-color: #7B7F83 !important; }
+      .bg-warning-light90 { background-color: #FFFF61 !important;}
+    </style>
+    {% block extrahead %}
+    {% endblock %}
+  </head>
+  <body>
+
+    <header>
+      <div class="px-3 py-2 bg-dark text-white">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <div class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+
+            </div>
+  
+            <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+              {% include 'core/_widgets/_menu_item.html' with count=None label='Home' color='info' icon='home' item_url='core:home-view' %}
+              {% include 'core/_widgets/_menu_item.html' with count=weapons_count label='Weapons' color='danger' icon='swords' item_url='core:weapons-view' %}
+              {# {% include 'core/_widgets/_menu_item.html' with count=armors_count label='Armors' color='warning' icon='shield' item_url='core:armors-view' %} #}
+              {% include 'core/_widgets/_menu_item.html' with count=None label='Tools' color='info' icon='screwdriver-wrench' item_url='tools:tools-home-view' %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% block actions %}
+      
+      {% endblock %}
+    </header>
+
+    <div class="container">
+        {% block content %}
+        <div class="row mt-4">
+          {# {% include "core/_widgets/section.html" with title="Abilities" section_url="core:abilities-view" icon="running text-primary" %} #}
+          {% include "core/_widgets/section.html" with title="Armor" section_url="core:armors-view" icon="shield text-warning"  %}
+          {# {% include "core/_widgets/section.html" with title="Characters" section_url="core:characters-view" icon="user-astronaut text-info"  %} #}
+          {# {% include "core/_widgets/section.html" with title="Enemies" section_url="core:enemies-view" icon="alien-monster text-success"  %} #}
+          {# {% include "core/_widgets/section.html" with title="Elements" section_url="core:elements-view" icon="atom text-warning"  %} #}
+          {# {% include "core/_widgets/section.html" with title="Items" section_url="core:items-view" icon="flask-potion text-danger"  %} #}
+          {# {% include "core/_widgets/section.html" with title="Locations" section_url="core:locations-view" icon="map-marker-alt text-info"  %} #}
+          {# {% include "core/_widgets/section.html" with title="Pets" section_url="core:locations-view" icon="paw text-success"  %} #}
+          {# {% include "core/_widgets/section.html" with title="Quests" section_url="core:quests-view" icon="question text-warning"  %} #}
+          {# {% include "core/_widgets/section.html" with title="Spells" section_url="core:spells-view" icon="book-spells text-secondary"  %} #}
+          {# {% include "core/_widgets/section.html" with title="States" section_url="core:spells-view" icon="code-branch text-primary"  %} #}
+          {% include "core/_widgets/section.html" with title="Weapons" section_url="core:weapons-view" icon="swords text-danger"  %}  
+        </div>
+        {% endblock %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    {% block extrascript %}
+    {% endblock %}
+  </body>
+</html>
