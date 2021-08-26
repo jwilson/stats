@@ -18,12 +18,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 'fontawesomepro',
     'django_select2',
-    'django_bootstrap5',
+    'bootstrap5',
 
     'core',
-    'tools',
 ]
 
 MIDDLEWARE = [
@@ -50,7 +48,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                'core.context_processors.item_counts',
+                # 'core.context_processors.item_counts',
             ],
         },
     },

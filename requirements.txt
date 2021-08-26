@@ -1,8 +1,7 @@
 django
-# --extra-index-url https://dl.fontawesome.com/02C8080F-6684-46E5-B46A-828FD481F0C8/fontawesome-pro/python/simple/
-# fontawesomepro==6.0.0-beta1
 django_select2
-django-bootstrap5
+django-bootstrap-v5
 django_redis
 Pillow
 gunicorn
+flake8

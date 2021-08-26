@@ -1,0 +1,10 @@
+[packages]
+django-select2 = "*"
+django-bootstrap-v5 = "*"
+django-redis = "*"
+gunicorn = "*"
+Django = "*"
+Pillow = "*"
+
+[dev-packages]
+flake8 = "*"
