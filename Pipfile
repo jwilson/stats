@@ -5,6 +5,8 @@ django-redis = "*"
 gunicorn = "*"
 Django = "*"
 Pillow = "*"
+python-dateutil = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 flake8 = "*"

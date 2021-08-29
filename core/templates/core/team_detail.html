@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% load cache %}
+
+{% block content %}
+{# {% cache 60 name %} #}
+<img src="{{ team.logo_url }}" />
+<h1>{{ team.name }}</h1>
+<table class="table table-bordered table-striped table-sm table-dark">
+    <tr>
+        <th>Player Name</th>
+        <th>Position</th>
+        <th>ATT</th>
+        <th>ATT/G</th>
+        <th>YDS</th>
+        <th>AVG</th>
+        <th>YDS/G</th>
+        <th>TD</th>
+        <th>LNG</th>
+        <th>1St</th>
+        <th>1st%</th>
+        <th>20+</th>
+        <th>40+</th>
+        <th>FUM</th>
+    </tr>
+    {% for stat in team.get_current_season_stats %}
+    <tr>
+        <td>{{ stat.player.name }}</td>
+        <td>{{ stat.player.position }}</td>
+        <td>{{ stat.attempts }}</td>
+        <td>{{ stat.attempts_game }}</td>
+        <td>{{ stat.yards }}</td>
+        <td>{{ stat.average }}</td>
+        <td>{{ stat.yards_game }}</td>
+        <td>{{ stat.touchdowns }}</td>
+        <td>{{ stat.longgains }}{% if stat.longgains_team %}*{% endif %}</td>
+        <td>{{ stat.first_down }}</td>
+        <td>{{ stat.first_down_conversion }}</td>
+        <td>{{ stat.twenty_plus }}</td>
+        <td>{{ stat.forty_plus }}</td>
+        <td>{{ stat.fumbles }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{# {% endcache %} #}
+{% endblock %}

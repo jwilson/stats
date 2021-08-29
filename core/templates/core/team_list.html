@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load core_tags cache %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .card-anchor { text-decoration:none !important;color:black; }
+</style>
+{% endblock %}
+
+{% block content %}
+{% cache 60 conferences %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="text-danger border-bottom border-danger">AFC</h1>
+        {% include 'core/widgets/_conference_teams.html' with teams=object_list|conference_teams:'AFC' %}
+        <h1 class="text-primary border-bottom border-primary mt-4">NFC</h1>
+        {% include 'core/widgets/_conference_teams.html' with teams=object_list|conference_teams:'NFC' %}
+    </div>
+</div>
+{% endcache %}
+
+{% endblock %}

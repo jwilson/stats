@@ -1,0 +1,13 @@
+{% load core_tags %}
+
+<h4 class="mt-4">North</h4>
+{% include "core/widgets/_division_teams.html" with teams=teams|division_teams:"N" %}
+
+<h4 class="mt-4">South</h4>
+{% include "core/widgets/_division_teams.html" with teams=teams|division_teams:"S" %}
+
+<h4 class="mt-4">East</h4>
+{% include "core/widgets/_division_teams.html" with teams=teams|division_teams:"E" %}
+
+<h4 class="mt-4">West</h4>
+{% include "core/widgets/_division_teams.html" with teams=teams|division_teams:"W" %}

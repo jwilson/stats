@@ -12,7 +12,6 @@ vscode:
     - ms-python.python
     - GitHub.github-vscode-theme
     - eamodio.gitlens
-    - ms-dotnettools.csharp
 
 # ports:
 #   - port: 8000

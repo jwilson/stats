@@ -1,0 +1,12 @@
+<div class="row row-cols-md-5 row-col-6">
+    {% for team in teams %}
+    <a href="{% url 'core:team-stats-view' team.id %}" class="card-anchor">
+        <div class="col">
+            <div class="card h-100 text-center">
+                <img src="{{ team.logo_url }}" class="card-img-top img-responsive">
+                <h5 class="mt-1 card-title">{{ team.name }}</h5>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>

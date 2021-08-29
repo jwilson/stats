@@ -60,7 +60,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': BASE_DIR / 'db.sqlite3',
-        'NAME': BASE_DIR + 'db.sqlite3',
+        'NAME': BASE_DIR + '/db.sqlite3',
     }
 }
 
@@ -123,3 +123,7 @@ CACHES = {
 }
 
 SELECT2_CACHE_BACKEND = "select2"
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
