@@ -1,0 +1,25 @@
+{% with player=stat.player %}
+{% with team=stat.team %}
+<tr>
+    {% if show_player_info %}
+    <td><a href="{% url 'core:player-stats-view' player.pk %}">{{ player.name }}</a></td>
+    <td>{{ player.position }}</td>
+    {% if show_team_logo %}<td><img src="{{ team.logo_url }}" style="width:25px;"</td>{% endif %}
+    {% elif show_season_info %}
+    <td>{{ stat.season }}</td>
+    {% endif %}
+    <td>{{ stat.attempts }}</td>
+    <td>{{ stat.attempts_game }}</td>
+    <td>{{ stat.yards }}</td>
+    <td>{{ stat.average }}</td>
+    <td>{{ stat.yards_game }}</td>
+    <td>{{ stat.touchdowns }}</td>
+    <td>{{ stat.longest_gains }}{% if stat.longest_gains_touchdown %}*{% endif %}</td>
+    <td>{{ stat.first_down }}</td>
+    <td>{{ stat.first_down_conversion }}</td>
+    <td>{{ stat.twenty_plus }}</td>
+    <td>{{ stat.forty_plus }}</td>
+    <td>{{ stat.fumbles }}</td>
+</tr>
+{% endwith %}
+{% endwith %}

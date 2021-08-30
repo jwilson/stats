@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h2>{{ object.name }}</h2>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col">
+        <h4>{% translate "Previous Stats" %}</h4>
+        {% include 'core/widgets/_stats_table.html' with stats=previous_season_stats show_season_info=True %}
+    </div>
+</div>
+
+{% endblock %}

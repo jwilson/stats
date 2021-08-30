@@ -1,0 +1,34 @@
+{% load i18n %}
+
+<table class="table table-dark table-sm table-striped">
+    <tr>
+        {% if show_player_info %}
+        <th>{% translate "Player Name" %}</th>
+        <th>{% translate "Position" %}</th>
+        {% if show_team_logo %}
+        <th>{% translate "Team" %}</th>
+        {% endif %}
+        {% elif show_season_info %}
+        <th>{% translate "Season" %}</th>
+        {% endif %}
+        <th>ATT</th>
+        <th>ATT/G</th>
+        <th>YDS</th>
+        <th>AVG</th>
+        <th>YDS/G</th>
+        <th>TD</th>
+        <th>LNG</th>
+        <th>1st</th>
+        <th>1st%</th>
+        <th>20+</th>
+        <th>40+</th>
+        <th>FUM</th>
+    </tr>
+    {% for stat in stats %}
+    {% include 'core/widgets/_player_stats_table_row.html' with stat=stat show_player_info=show_player_info show_team_logo=show_team_logo %}
+    {% empty %}
+    <tr>
+        <td colspan="15" class="text-center pt-2 "><h5>No previous stats</h5></td>
+    </tr>
+    {% endfor %}
+</table>

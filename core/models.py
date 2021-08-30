@@ -48,10 +48,17 @@ class Season(models.Model):
             return '{}'.format(self.start_date.year)
         return '{}/{}'.format(self.start_date.strftime('%y'), self.end_date.strftime('%y'))
 
+    @classmethod
+    def get_current_season(cls):
+        return Season.objects.get(current=True)
+
 
 class Player(models.Model):
     name = models.CharField(max_length=255, help_text="The full name of the player.")
     position = models.CharField(max_length=255, choices=POSITIONS, help_text="The player's position")
+
+    class Meta:
+        ordering = ('name', )
 
     def __str__(self):
         return '{} - {}'.format(self.name, self.position)
@@ -90,8 +97,8 @@ class PlayerSeasonStats(models.Model):
     average = models.FloatField(default=0)
     yards_game = models.FloatField(default=0)
     touchdowns = models.PositiveIntegerField(default=0)
-    longgains = models.IntegerField(default=0)
-    longgains_team = models.BooleanField(default=False)
+    longest_gains = models.IntegerField(default=0)
+    longest_gains_touchdown = models.BooleanField(default=False)
     first_down = models.PositiveIntegerField(default=0)
     first_down_conversion = models.FloatField()
     twenty_plus = models.PositiveIntegerField(default=0)

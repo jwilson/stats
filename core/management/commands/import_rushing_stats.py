@@ -49,11 +49,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         locale.setlocale(locale.LC_ALL, 'en_US.UTF-8' )
         now = timezone.now()
-        filename = '{}/stats.json'.format(settings.BASE_DIR)
+        filename = '{}/stats_big.json'.format(settings.BASE_DIR)
         rushing_json_data = open(filename, 'r').read()
         rushing_data = json.loads(rushing_json_data)
         season = Season.objects.create(start_date=now-relativedelta(weeks=16),
-                                       end_date=now)
+                                       end_date=now,
+                                       current=True)
         teams = {}
         teams_to_bulk_create = []
         # franchises_to_bulk_create = []
@@ -89,13 +90,13 @@ class Command(BaseCommand):
             team = teams_by_abbr[player_stat['Team']]
             player = players_by_name[player_stat['Player']]
 
-            longgains = player_stat['Lng']
-            longgains_team = False
+            longest_gains_ = player_stat['Lng']
+            longest_gains__touchdown = False
             try:
                 int(longgains)
             except ValueError:
-                longgains_team = True
-                longgains = longgains[:-1]
+                longest_gains__touchdown = True
+                longest_gains_ = longgains[:-1]
 
             yards = player_stat['Yds']
             try:
@@ -112,8 +113,8 @@ class Command(BaseCommand):
                                      average=player_stat['Avg'],
                                      yards_game=player_stat['Yds/G'],
                                      touchdowns=player_stat['TD'],
-                                     longgains=int(longgains),
-                                     longgains_team=longgains_team,
+                                     longest_gains_=int(longest_gains_),
+                                     longest_gains__touchdown=longest_gains__touchdown,
                                      first_down=player_stat['1st'],
                                      first_down_conversion=player_stat['1st%'],
                                      twenty_plus=player_stat['20+'],

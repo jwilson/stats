@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table class="table table-dark table-sm table-striped">
+    <tr>
+        <th>Player Name</th>
+        <th>Position</th>
+        <th>Team</th>
+        <th>ATT</th>
+        <th>ATT/G</th>
+        <th>YDS</th>
+        <th>AVG</th>
+        <th>YDS/G</th>
+        <th>TD</th>
+        <th>LNG</th>
+        <th>{% translate "1st" %}</th>
+        <th>{% translate "1st% %}</th>
+        <th>20+</th>
+        <th>40+</th>
+        <th>FUM</th>
+    </tr>
+    {% for stat in object_list %}
+    {% include 'core/widgets/_player_stats_table_row.html' with stat=stat show_team_logo=True %}
+    {% endfor %}
+</table>
+{% endblock %}
