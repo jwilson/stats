@@ -1,10 +1,27 @@
 {% extends "base.html" %}
 
+{% load core_tags %}
+
 {% block content %}
 <div class="row mb-2">
     <div class="col border-bottom"><h3>League Rushing Leaders</h3></div>
 </div>
 <div class="row row-cols-1 row-cols-md-4 mb-4">
     {% include 'core/widgets/_stats_leader_showcase.html' with stats=current_season.season_stats %}
+</div>
+
+<div class="row mb-2">
+    <div class="col border-bottom"><h3>AFC Rushing Leaders</h3></div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-4 mb-4">
+    {% include 'core/widgets/_stats_leader_showcase.html' with stats=current_season.season_stats|conference_stats:"AFC" %}
+</div>
+
+<div class="row mb-2">
+    <div class="col border-bottom"><h3>NFC Rushing Leaders</h3></div>
+</div>
+<div class="row row-cols-1 row-cols-md-4 mb-4">
+    {% include 'core/widgets/_stats_leader_showcase.html' with stats=current_season.season_stats|conference_stats:"NFC" %}
 </div>
 {% endblock %}

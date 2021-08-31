@@ -79,22 +79,12 @@ class Player(STATS_CACHE_MIXIN, models.Model):
         key = 'current-season-player-stats-{}'.format(self.id)
         if not hasattr(self, '_current_season_stats'):
             self._current_season_stats = self.get_cached_stat(key, Q(season__current=True), settings.PLAYER_STATS_TIMEOUT)
-            # current_stats = cache.get(key)
-            # if not current_stats:
-            #     current_stats = self.season_stats.filter(season__current=True)
-            #     cache.set(key, current_stats, timeout=settings.PLAYER_STATS_TIMEOUT)
-            # self._current_season_stats = current_stats
         return self._current_season_stats
 
     def get_previous_seasons_stats(self):
         key = 'previous-season-player-stats-{}'.format(self.id)
         if not hasattr(self, '_previous_season_stats'):
             self._previous_season_stats = self.get_cached_stat(key, Q(season__current=False), settings.PLAYER_STATS_TIMEOUT, order_by='season__start_date')
-            # previous_stats = cache.get(key)
-            # if not previous_stats:
-            #     previous_stats = self.season_stats.filter(season__current=False).order_by('season__start_date')
-            #     cache.set(key, previous_stats, timeout=settings.PLAYER_STATS_TIMEOUT)
-            # self._previous_season_stats = previous_stats
         return self._previous_season_stats
 
 
@@ -119,11 +109,6 @@ class Team(STATS_CACHE_MIXIN, models.Model):
         key = 'current-season-team-stats-{}'.format(self.id)
         if not hasattr(self, '_current_season_stats'):
             self._current_season_stats = self.get_cached_stat(key, Q(season__current=True), settings.TEAM_STATS_TIMEOUT)
-            # current_stats = cache.get(key)
-            # if not current_stats:
-            #     current_stats = self.season_stats.filter(season__current=True)
-            #     cache.set(key, current_stats, timeout=settings.TEAM_STATS_TIMEOUT)
-            # self._current_season_stats = current_stats
         return self._current_season_stats
 
     def get_current_season_rushing_attempts_leader(self):

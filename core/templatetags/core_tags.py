@@ -16,6 +16,12 @@ def division_teams(teams, division):
 
 
 @register.filter
+def conference_stats(stats, conference):
+    conference_stats = stats.filter(team__conference=conference)
+    return conference_stats
+
+
+@register.filter
 def rushing_attempts_leader(stats):
     return stats.order_by('-attempts').first()
 
