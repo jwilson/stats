@@ -5,9 +5,16 @@
 {% block content %}
 {# {% cache 60 name %} #}
 <div class="row mb-4">
-    <div class="col">
-        <img src="{{ team.logo_url }}" />
+    <div class="col-8">
         <h1>{{ team.name }}</h1>
+    </div>
+    <div class="col-4">
+        <div class="d-flex justify-content-end mt-4 mr-4">
+            {% with team=current_season_stats.first.team %}
+            <a href="{% url 'core:team-stats-view' team.id %}"><img src="{{ team.logo_url }}" style="width:200px;" /></a>
+            <!-- <h5>{{ current_season_stats.first.team.name }}</h5> -->
+            {% endwith %}
+        </div>
     </div>
 </div>
 
