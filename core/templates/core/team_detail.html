@@ -12,14 +12,16 @@
 </div>
 
 <div class="row mb-2">
-    <div class="col border-bottom"><h3>Team Rushing Leaders</h3></div>
+    <div class="col border-bottom"><h4>{% translate "Team Rushing Leaders" %}</h4></div>
 </div>
 <div class="row row-cols-1 row-cols-md-4 mb-4">
     {% include 'core/widgets/_stats_leader_showcase.html' with stats=team.get_current_season_stats %}
 </div>
 
+<div class="row mb-2">
+    <div class="col border-bottom"><h4>{% translate "Team Rushing Stats" %}</h4></div>
+</div>
 <div class="row">
-    <div class="col-12 border-bottom mb-2"><h3>Team Rushing Stats</h3></div>
     <div class="col-12">
         {% include 'core/widgets/_stats_table.html' with stats=team.get_current_season_stats show_player_info=True show_team_logo=False %}
     </div>

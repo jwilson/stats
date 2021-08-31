@@ -9,11 +9,21 @@
     </div>
 </div>
 
-
+<div class="row mb-2">
+    <div class="col border-bottom"><h4>{% translate "Current Stats" %}</h4></div>
+</div>
 <div class="row">
     <div class="col">
-        <h4>{% translate "Previous Stats" %}</h4>
-        {% include 'core/widgets/_stats_table.html' with stats=previous_season_stats show_season_info=True %}
+        {% include 'core/widgets/_stats_table.html' with stats=object.get_current_season_stats show_season_info=True %}
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col border-bottom"><h4>{% translate "Previous Stats" %}</h4></div>
+</div>
+<div class="row">
+    <div class="col">
+        {% include 'core/widgets/_stats_table.html' with stats=object.get_previous_seasons_stats show_season_info=True show_team_logo=True %}
     </div>
 </div>
 
