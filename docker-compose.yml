@@ -7,8 +7,8 @@ services:
       - "5432:5432"
     expose:
       - 5432
-    networks:
-      - stats_network
+    # networks:
+    #   - stats_network
   django:
     build: .
     ports:
@@ -17,9 +17,9 @@ services:
       - postgres:postgres
     depends_on:
       - postgres
-    networks:
-      - stats_network
+    # networks:
+    #   - stats_network
   
-networks:
-  stats_network:
-    external: true
+# networks:
+#   stats_network:
+#     external: true
