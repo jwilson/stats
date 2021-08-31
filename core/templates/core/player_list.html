@@ -3,15 +3,10 @@
 {% load i18n bootstrap5 %}
 
 {% block content %}
-<div class="row mb-2">
-    <div class="col border-bottom"><h3>{% translate "Player Stats" %}</h3></div>
-</div>
-<div class="row">
-    <div class="col">
-        {% include 'core/widgets/_stats_table.html' with stats=object_list show_player_info=True show_team_logo=True %}
-    </div>
-</div>
-
+<form>
+{% translate "Player Stats" as player_stats_title %}
+{% include 'core/widgets/_stats_table.html' with title=player_stats_title stats=current_season_stats show_player_info=True show_team_logo=True sortable=True %}
+</form>
 <div class="row">
     <div class="col">
         <div class="d-flex justify-content-center">
@@ -19,7 +14,6 @@
             {% bootstrap_pagination page_obj %}
             {% endif %}
         </div>
-       
     </div>
 </div>
 {% endblock %}

@@ -7,7 +7,7 @@
     <div class="col border-bottom"><h3>League Rushing Leaders</h3></div>
 </div>
 <div class="row row-cols-1 row-cols-md-4 mb-4">
-    {% include 'core/widgets/_stats_leader_showcase.html' with stats=current_season.season_stats show_player_image=True %}
+    {% include 'core/widgets/_stats_leader_showcase.html' with stats=current_season_stats show_player_image=True %}
 </div>
 
 <div class="row mb-2">
@@ -15,13 +15,13 @@
 </div>
 
 <div class="row row-cols-1 row-cols-md-4 mb-4">
-    {% include 'core/widgets/_stats_leader_showcase.html' with stats=current_season.season_stats|conference_stats:"AFC" show_player_image=True %}
+    {% include 'core/widgets/_stats_leader_showcase.html' with stats=current_season_stats|conference_stats:"AFC" show_player_image=True %}
 </div>
 
 <div class="row mb-2">
     <div class="col border-bottom"><h3>NFC Rushing Leaders</h3></div>
 </div>
 <div class="row row-cols-1 row-cols-md-4 mb-4">
-    {% include 'core/widgets/_stats_leader_showcase.html' with stats=current_season.season_stats|conference_stats:"NFC" show_player_image=True %}
+    {% include 'core/widgets/_stats_leader_showcase.html' with stats=current_season_stats|conference_stats:"NFC" show_player_image=True %}
 </div>
 {% endblock %}

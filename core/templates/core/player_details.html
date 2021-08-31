@@ -15,10 +15,10 @@
         </div>
     </div>
     <div class="col-4">
-        <div class="d-flex justify-content-end" style="margin-top:-20px;">
-            {% with team=object.get_current_season_stats.first.team %}
-            <a href="{% url 'core:team-stats-view' team.id %}"><img src="{{ team.logo_url }}" style="width:150px;" /></a>
-            <!-- <h5>{{ object.get_current_season_stats.first.team.name }}</h5> -->
+        <div class="d-flex justify-content-end mt-4 mr-4">
+            {% with team=current_season_stats.first.team %}
+            <a href="{% url 'core:team-stats-view' team.id %}"><img src="{{ team.logo_url }}" style="width:200px;" /></a>
+            <!-- <h5>{{ current_season_stats.first.team.name }}</h5> -->
             {% endwith %}
         </div>
     </div>
@@ -27,25 +27,13 @@
     <div class="col border-bottom"><h4>{% translate "Personal Rushing Team Stats" %}</h4></div>
 </div>
 <div class="row row-cols-1 row-cols-md-4 mb-4">
-    {% include 'core/widgets/_stats_leader_showcase.html' with stats=object.get_current_season_stats show_player_image=False %}
+    {% include 'core/widgets/_stats_leader_showcase.html' with stats=current_season_stats show_player_image=False %}
 </div>
 
-<div class="row mb-2">
-    <div class="col border-bottom"><h4>{% translate "Current Stats" %}</h4></div>
-</div>
-<div class="row">
-    <div class="col">
-        {% include 'core/widgets/_stats_table.html' with stats=object.get_current_season_stats show_season_info=True %}
-    </div>
-</div>
+{% translate "Current Stats" as current_stats_title %}
+{% include 'core/widgets/_stats_table.html' with title=current_stats_title stats=current_season_stats show_season_info=True sortable=False %}
 
-<div class="row mb-2">
-    <div class="col border-bottom"><h4>{% translate "Previous Stats" %}</h4></div>
-</div>
-<div class="row">
-    <div class="col">
-        {% include 'core/widgets/_stats_table.html' with stats=object.get_previous_seasons_stats show_season_info=True show_team_logo=True %}
-    </div>
-</div>
+{% translate "Previous Stats" as previous_stats_title %}
+{% include 'core/widgets/_stats_table.html' with title=previous_stats_title stats=previous_season_stats show_season_info=True show_team_logo=True sortable=True %}
 
 {% endblock %}

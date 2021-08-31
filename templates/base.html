@@ -8,9 +8,11 @@
     <title>Not(the) Football League</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/3a06ea9ad9.js" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/025b11d5c0.js" crossorigin="anonymous"></script>
     <link href="{% static 'css/stats.css' %}" rel="stylesheet">
     {% block extrahead %}
+    <style>
+      .dnone { display:none; }
+    </style>
     {% endblock %}
   </head>
   <body>
@@ -21,6 +23,16 @@
           <span class="fs-4">Not(the) Football League</span>
         </a>
         <ul class="nav">
+          <li>
+            <form action="{% url 'core:player-filter-view' %}" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+              <input type="search" class="form-control form-control-dark" placeholder="Player filter" name="player_name" value="{{ request.session.player_filter|default_if_none:'' }}">
+            </form>
+          </li>
+          {% if request.session.player_filter or export_sort %}
+          <li>
+            <li class="nav-item"><a href="{% url 'core:export' %}?{{ request.GET.urlencode }}" class="nav-link link-dark">EXPORT FILTER</a></li>
+          </li>
+          {% endif %}
           <li class="nav-item"><a href="{% url 'core:home-view' %}" class="nav-link link-secondary active" aria-current="page">Home</a></li>
           <li class="nav-item"><a href="{% url 'core:teams-view' %}" class="nav-link link-dark">Teams</a></li>
           <li class="nav-item"><a href="{% url 'core:players-view' %}" class="nav-link link-dark">Players</a></li>
@@ -32,28 +44,35 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
-      new Vue({
-          el: '#table-header',
+      var v = new Vue({
+          el: '#sortable-table',
           data: {
             yds: 0,
-            td: 0,
-            lng: 0
+            tds: 0,
+            lng: 0,
+            sorted: false,
           },
           methods: {
               ydsClick: function (event) {
                   this.yds++;
                   if (this.yds > 2) this.yds = 0;
+                  this.sorted = (this.yds == 0 && this.tds == 0 && this.lng === 0) ? false : true;
               },
-              tdClick: function (event) {
-                  this.td++;
-                  if (this.td > 2) this.td = 0;
+              tdsClick: function (event) {
+                  this.tds++;
+                  if (this.tds > 2) this.tds = 0;
+                  this.sorted = (this.yds == 0 && this.tds == 0 && this.lng === 0) ? false : true;
               },
               lngClick: function (event) {
                   this.lng++;
                   if (this.lng > 2) this.lng = 0;
+                  this.sorted = (this.yds == 0 && this.tds == 0 && this.lng === 0) ? false : true;
               }
           }
-      })
+      });
+      v.$data.lng = preload.lng;
+      v.$data.yds = preload.yds;
+      v.$data.tds = preload.tds;
   </script>
     {% block extrascript %}
     {% endblock %}

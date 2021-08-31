@@ -1,43 +1,85 @@
 {% load i18n %}
 
-<table class="table table-dark table-sm table-striped">
-    <tr id="table-header">
-        {% if show_player_info %}
-        <th>{% translate "Player Name" %}</th>
-        <th>{% translate "Position" %}</th>
-        {% if show_team_logo %}
-        <th>{% translate "Team" %}</th>
-        {% endif %}
-        {% elif show_season_info %}
-        <th>{% translate "Season" %}</th>
-        {% endif %}
-        <th>ATT</th>
-        <th>ATT/G</th>
-        <th v-on:click="ydsClick">YDS
-            <input :value="yds" type="hidden">
-        </th>
-        <th>AVG</th>
-        <th>YDS/G</th>
-        <th v-on:click="tdClick">TD
-            <input :value="td" type="hidden">
-        </th>
-        <th v-on:click="lngClick">LNG
-            <input :value="lng" type="hidden">
-        </th>
-        <th>1st</th>
-        <th>1st%</th>
-        <th>20+</th>
-        <th>40+</th>
-        <th>FUM</th>
-    </tr>
-    {% for stat in stats %}
-    {% include 'core/widgets/_player_stats_table_row.html' with stat=stat show_player_info=show_player_info show_team_logo=show_team_logo %}
-    {% empty %}
-    <tr>
-        <td colspan="15" class="text-center pt-2 "><h5>No previous stats</h5></td>
-    </tr>
-    {% endfor %}
-</table>
-{% block extrascript %}
+{% if request.session.player_filter %}
+<input type="hidden" name="player_name" value="{{ request.session.player_filter  }}">
+{% endif %}
+<div {% if sortable %}id="sortable-table"{% endif %}>
+    <div class="row mb-4">
+        <div class="col border-bottom d-flex justify-content-between"><h5>{{ title }}</h5>
+            <button v-show="sorted" class="btn btn-sm btn-primary float-right mb-2">Apply Sort</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12"> 
+            <table class="table table-dark table-sm table-striped">
+                <tr>
+                    {% if show_player_info %}
+                    <th>{% translate "Player Name" %}</th>
+                    <th>{% translate "Position" %}</th>
+                    {% if show_team_logo %}
+                    <th>{% translate "Team" %}</th>
+                    {% endif %}
+                    {% elif show_season_info %}
+                    <th>{% translate "Season" %}</th>
+                    {% endif %}
+                    <th>ATT</th>
+                    <th>ATT/G</th>
+                    {% if sortable %}
+                    <th v-on:click="ydsClick">YDS
+                        <input :value="yds" type="hidden" name="yards">
+                        <span v-show="yds === 1"><i class="fas fa-sort-up"></i></span>
+                        <span v-show="yds === 2"><i class="fas fa-sort-down"></i></span>
+                    </th>
+                    {% else %}
+                    <th>YDS</th>
+                    {% endif %}
+                    <th>AVG</th>
+                    <th>YDS/G</th>
+                    {% if sortable %}
+                    <th v-on:click="tdsClick">TD
+                        <input :value="tds" type="hidden" name="touchdowns">
+                        <span v-show="tds === 1"><i class="fas fa-sort-up"></i></span>
+                        <span v-show="tds === 2"><i class="fas fa-sort-down"></i></span>
+                    </th>
+                    {% else %}
+                    <th>TDS</th>
+                    {% endif %}
+                    {% if sortable %}
+                    <th v-on:click="lngClick">LNG
+                        <input :value="lng" type="hidden" name="longest_gains">
+                        <span v-show="lng === 1"><i class="fas fa-sort-up"></i></span>
+                        <span v-show="lng === 2"><i class="fas fa-sort-down"></i></span>
+                    </th>
+                    {% else %}
+                    <th>LNG</th>
+                    {% endif %}
+                    <th>1st</th>
+                    <th>1st%</th>
+                    <th>20+</th>
+                    <th>40+</th>
+                    <th>FUM</th>
+                </tr>
+                {% for stat in stats %}
+                {% include 'core/widgets/_player_stats_table_row.html' with stat=stat show_player_info=show_player_info show_team_logo=show_team_logo %}
+                {% empty %}
+                <tr>
+                    <td colspan="15" class="text-center pt-2 "><h5>No previous stats</h5></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
 
+
+{% block extrascript %}
+{% if sortable %}
+<script>
+    var preload = {
+        lng: {{ lng }},
+        yds: {{ yds }},
+        tds: {{ tds }},
+    };
+</script>
+{% endif %}
 {% endblock %}
