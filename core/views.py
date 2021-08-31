@@ -9,6 +9,10 @@ from .models import Team, Player, PlayerSeasonStats, Season
 class HomeView(TemplateView):
     template_name = 'core/home.html'
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['current_season'] = Season.get_current_season()
+        return ctx
 
 class TeamsListView(ListView):
     model = Team

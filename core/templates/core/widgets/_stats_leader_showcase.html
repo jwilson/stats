@@ -1,0 +1,21 @@
+{% load i18n core_tags %}
+
+{% translate "Attempts" as attempts_title %}
+{% with attempts_stat=stats|rushing_attempts_leader %}
+{% include 'core/widgets/_stat_leader_showcase_detail.html' with title=attempts_title player=attempts_stat.player stat=attempts_stat.attempts %}
+{% endwith %}
+
+{% translate "Yards" as yards_title %}
+{% with yards_stat=stats|rushing_yards_leader %}
+{% include 'core/widgets/_stat_leader_showcase_detail.html' with title=yards_title player=yards_stat.player stat=yards_stat.yards %}
+{% endwith %}
+
+{% translate "Touchdowns" as touchdowns_title %}
+{% with touchdowns_stat=stats|rushing_touchdowns_leader %}
+{% include 'core/widgets/_stat_leader_showcase_detail.html' with title=touchdowns_title player=touchdowns_stat.player stat=touchdowns_stat.touchdowns %}
+{% endwith %}
+
+{% translate "1st Downs" as first_down_title %}
+{% with first_down_stat=stats|rushing_1st_leader %}
+{% include 'core/widgets/_stat_leader_showcase_detail.html' with title=first_down_title player=first_down_stat.player stat=first_down_stat.first_down %}
+{% endwith %}

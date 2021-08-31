@@ -82,9 +82,31 @@ class Team(models.Model):
         return url
 
     def get_current_season_stats(self):
-        current_season = Season.objects.get(current=True)
-        current_stats = self.season_stats.filter(season=current_season)
+        key = 'current-season-stats-{}'.format(self.abbreviation)
+        current_stats = cache.get(key)
+        if not current_stats:
+            current_season = Season.objects.get(current=True)
+            current_stats = self.season_stats.filter(season=current_season)
+            cache.set(key, current_stats, timeout=settings.TEAM_STATS_TIMEOUT)
         return current_stats
+
+    def get_current_season_rushing_attempts_leader(self):
+        current_stats = self.get_current_season_stats().order_by('-attempts')
+        return current_stats.first()
+
+    def get_current_season_rushing_yards_leader(self):
+        current_stats = self.get_current_season_stats().order_by('-yards')
+        return current_stats.first()
+
+    def get_current_season_rushing_touchdowns_leader(self):
+        current_stats = self.get_current_season_stats().order_by('-touchdowns')
+        return current_stats.first()
+
+    def get_current_season_rushing_1st_leader(self):
+        current_stats = self.get_current_season_stats().order_by('-first_down')
+        return current_stats.first()
+
+
 
 
 class PlayerSeasonStats(models.Model):

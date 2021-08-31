@@ -14,3 +14,22 @@ def division_teams(teams, division):
     division_teams = teams.filter(division=division)
     return division_teams
 
+
+@register.filter
+def rushing_attempts_leader(stats):
+    return stats.order_by('-attempts').first()
+
+
+@register.filter
+def rushing_yards_leader(stats):
+    return stats.order_by('-yards').first()
+
+
+@register.filter
+def rushing_touchdowns_leader(stats):
+    return stats.order_by('-touchdowns').first()
+
+
+@register.filter
+def rushing_1st_leader(stats):
+    return stats.order_by('-first_down').first()
