@@ -1,5 +1,5 @@
 ## start app
-docker-compose up
+docker-compose up\
 docker exec stats_django_1 /bin/sh -c "/app/./init.sh"
 
 
