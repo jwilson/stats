@@ -49,7 +49,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # locale.setlocale(locale.LC_ALL, 'en_US.UTF-8' )
         now = timezone.now()
-        filename = '{}/stats_big.json'.format(settings.BASE_DIR)
+        filename = '{}/stats.json'.format(settings.BASE_DIR)
         rushing_json_data = open(filename, 'r').read()
         rushing_data = json.loads(rushing_json_data)
         season = Season.objects.create(start_date=now-relativedelta(weeks=16),
