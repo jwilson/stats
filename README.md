@@ -1,9 +1,7 @@
-## start
-docker-compose -d up
+## start app
+docker-compose up
+docker exec stats_django_1 /bin/sh -c "/app/./init.sh"
 
-## connect to app server
-docker exec -it joshwilsonappserver bash
 
-## initialize database
-./manage.py migrate
-./manage import_rushing_stats
+## run
+browse to http://localhost:8000

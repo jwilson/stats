@@ -34,7 +34,7 @@ RUN chown -R stats /app
 
 USER stats
 
-RUN chmod +x run.sh
+RUN chmod +x init.sh
 
 RUN python manage.py collectstatic --noinput --clear
 # RUN python manage.py migrate --noinput

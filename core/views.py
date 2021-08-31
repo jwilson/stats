@@ -90,7 +90,7 @@ class PlayersListView(SORT_MIXIN, ListView):
     def get_queryset(self):
         qs = super().get_queryset()
         qs = qs.filter(season__current=True).order_by('player__name')
-        player_filter = self.request.session['player_filter']
+        player_filter = self.request.session.get('player_filter', None)
         if player_filter:
             qs = qs.filter(player__name__icontains=player_filter)
         order_by = self.build_order_by()
