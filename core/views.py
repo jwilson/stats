@@ -93,7 +93,16 @@ class PlayersListView(SORT_MIXIN, ListView):
         player_filter = self.request.session['player_filter']
         if player_filter:
             qs = qs.filter(player__name__icontains=player_filter)
+        order_by = self.build_order_by()
+        qs = qs.order_by(*order_by)
         return qs
+
+    def build_order_by(self):
+        form = TableSortForm(self.request.GET or None)
+        order_by = []
+        if form.is_valid():
+            order_by = generate_order_by(form.cleaned_data)
+        return order_by
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -103,12 +112,10 @@ class PlayersListView(SORT_MIXIN, ListView):
         ctx['yds'] = 0
         ctx['tds'] = 0
         if form.is_valid():
-            current_season_stats = self.sort_queryset(current_season_stats, form)
             cleaned_data = form.cleaned_data
             ctx['lng'] = cleaned_data['longest_gains'] 
             ctx['yds'] = cleaned_data['yards'] 
             ctx['tds'] = cleaned_data['touchdowns'] 
-        ctx['current_season_stats'] = current_season_stats
         return ctx
 
 

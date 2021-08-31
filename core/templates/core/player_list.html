@@ -5,13 +5,13 @@
 {% block content %}
 <form>
 {% translate "Player Stats" as player_stats_title %}
-{% include 'core/widgets/_stats_table.html' with title=player_stats_title stats=current_season_stats show_player_info=True show_team_logo=True sortable=True %}
+{% include 'core/widgets/_stats_table.html' with title=player_stats_title stats=object_list show_player_info=True show_team_logo=True sortable=True %}
 </form>
 <div class="row">
     <div class="col">
         <div class="d-flex justify-content-center">
             {% if is_paginated %}
-            {% bootstrap_pagination page_obj %}
+            {% bootstrap_pagination page_obj extra_url=request.GET.urlencode %}
             {% endif %}
         </div>
     </div>
