@@ -10,7 +10,7 @@ def conference_teams(teams, conference):
     conference_teams = teams.filter(conference=conference)
     return conference_teams
 
-
+# TODO this needs to move to a classmethod on team
 @register.filter
 def division_teams(teams, division):
     key = 'divison-teams-{}'.format(division)
@@ -21,6 +21,7 @@ def division_teams(teams, division):
     return division_teams
 
 
+# TODO this needs to move to a classmethod on team
 @register.filter
 def conference_stats(stats, conference):
     key = 'conference-teams-{}'.format(conference)
