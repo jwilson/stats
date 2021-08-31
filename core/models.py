@@ -78,13 +78,16 @@ class Player(STATS_CACHE_MIXIN, models.Model):
     def get_current_season_stats(self):
         key = 'current-season-player-stats-{}'.format(self.id)
         if not hasattr(self, '_current_season_stats'):
-            self._current_season_stats = self.get_cached_stat(key, Q(season__current=True), settings.PLAYER_STATS_TIMEOUT)
+            q = Q(season__current=True)
+            self._current_season_stats = self.get_cached_stat(key, q, settings.PLAYER_STATS_TIMEOUT)
         return self._current_season_stats
 
     def get_previous_seasons_stats(self):
         key = 'previous-season-player-stats-{}'.format(self.id)
         if not hasattr(self, '_previous_season_stats'):
-            self._previous_season_stats = self.get_cached_stat(key, Q(season__current=False), settings.PLAYER_STATS_TIMEOUT, order_by='season__start_date')
+            q = Q(season__current=False)
+            order_by = 'season__start_date'
+            self._previous_season_stats = self.get_cached_stat(key, q, settings.PLAYER_STATS_TIMEOUT, order_by=order_by)
         return self._previous_season_stats
 
 
@@ -108,24 +111,24 @@ class Team(STATS_CACHE_MIXIN, models.Model):
     def get_current_season_stats(self):
         key = 'current-season-team-stats-{}'.format(self.id)
         if not hasattr(self, '_current_season_stats'):
-            self._current_season_stats = self.get_cached_stat(key, Q(season__current=True), settings.TEAM_STATS_TIMEOUT)
+            q = Q(season__current=True)
+            self._current_season_stats = self.get_cached_stat(key, q, settings.TEAM_STATS_TIMEOUT)
         return self._current_season_stats
 
+    def _get_season_stats_ordered(self, filter):
+        return self.get_current_season_stats().order_by(filter)
+
     def get_current_season_rushing_attempts_leader(self):
-        current_stats = self.get_current_season_stats().order_by('-attempts')
-        return current_stats.first()
+        return self._get_season_stats_ordered('-attempts').first()
 
     def get_current_season_rushing_yards_leader(self):
-        current_stats = self.get_current_season_stats().order_by('-yards')
-        return current_stats.first()
+        return self._get_season_stats_ordered('-yards').first()
 
     def get_current_season_rushing_touchdowns_leader(self):
-        current_stats = self.get_current_season_stats().order_by('-touchdowns')
-        return current_stats.first()
+        return self._get_season_stats_ordered('-touchdowns').first()
 
     def get_current_season_rushing_1st_leader(self):
-        current_stats = self.get_current_season_stats().order_by('-first_down')
-        return current_stats.first()
+        return self._get_season_stats_ordered('-first_down').first()
 
 
 class PlayerSeasonStats(models.Model):

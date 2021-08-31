@@ -15,7 +15,7 @@
     <div class="col border-bottom"><h4>{% translate "Team Rushing Leaders" %}</h4></div>
 </div>
 <div class="row row-cols-1 row-cols-md-4 mb-4">
-    {% include 'core/widgets/_stats_leader_showcase.html' with stats=team.get_current_season_stats %}
+    {% include 'core/widgets/_stats_leader_showcase.html' with stats=team.get_current_season_stats show_player_image=True %}
 </div>
 
 <div class="row mb-2">

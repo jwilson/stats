@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load i18n %}
+{% load i18n bootstrap5 %}
 
 {% block content %}
 <div class="row mb-2">
@@ -12,5 +12,14 @@
     </div>
 </div>
 
-
+<div class="row">
+    <div class="col">
+        <div class="d-flex justify-content-center">
+            {% if is_paginated %}
+            {% bootstrap_pagination page_obj %}
+            {% endif %}
+        </div>
+       
+    </div>
+</div>
 {% endblock %}

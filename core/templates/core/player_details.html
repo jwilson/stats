@@ -3,10 +3,31 @@
 {% load i18n %}
 
 {% block content %}
-<div class="row">
-    <div class="col">
-        <h2>{{ object.name }}</h2>
+<div class="row mb-4">
+    <div class="col-8">
+        <h1>{{ object.name }}</h1>
+        <h5>{{ object.position }}</h5>
+
+        <div class="card" style="max-width:180px;">
+            <div class="card-img-top text-center p-2">
+                <i class="fas fa-user" style="font-size:10em;"></i>
+            </div>
+        </div>
     </div>
+    <div class="col-4">
+        <div class="d-flex justify-content-end" style="margin-top:-20px;">
+            {% with team=object.get_current_season_stats.first.team %}
+            <a href="{% url 'core:team-stats-view' team.id %}"><img src="{{ team.logo_url }}" style="width:150px;" /></a>
+            <!-- <h5>{{ object.get_current_season_stats.first.team.name }}</h5> -->
+            {% endwith %}
+        </div>
+    </div>
+</div>
+<div class="row mb-2">
+    <div class="col border-bottom"><h4>{% translate "Personal Rushing Team Stats" %}</h4></div>
+</div>
+<div class="row row-cols-1 row-cols-md-4 mb-4">
+    {% include 'core/widgets/_stats_leader_showcase.html' with stats=object.get_current_season_stats show_player_image=False %}
 </div>
 
 <div class="row mb-2">
