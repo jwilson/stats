@@ -40,4 +40,4 @@ RUN python manage.py collectstatic --noinput --clear
 # RUN python manage.py migrate --noinput
 # RUN python manage.py import_rushing_stats
 # CMD set -xe; python manage.py migrate --noinput; gunicorn stats.wsgi:application
-CMD set -xe; gunicorn stats.wsgi:application
+CMD set -xe; gunicorn stats.wsgi:application --workers 3 --timeout 120

@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 
-{% load core_tags %}
+{% load cache core_tags %}
 
 {% block content %}
+{% cache 3600 home_leaders %}
 <div class="row mb-2">
     <div class="col border-bottom"><h3>League Rushing Leaders</h3></div>
 </div>
 <div class="row row-cols-1 row-cols-md-4 mb-4">
     {% include 'core/widgets/_stats_leader_showcase.html' with stats=current_season_stats show_player_image=True %}
 </div>
+{% endcache %}
 
+{% cache 3600 home_afc_leaders %}
 <div class="row mb-2">
     <div class="col border-bottom"><h3>AFC Rushing Leaders</h3></div>
 </div>
@@ -17,11 +20,14 @@
 <div class="row row-cols-1 row-cols-md-4 mb-4">
     {% include 'core/widgets/_stats_leader_showcase.html' with stats=current_season_stats|conference_stats:"AFC" show_player_image=True %}
 </div>
+{% endcache %}
 
+{% cache 3600 home_nfc_leaders %}
 <div class="row mb-2">
     <div class="col border-bottom"><h3>NFC Rushing Leaders</h3></div>
 </div>
 <div class="row row-cols-1 row-cols-md-4 mb-4">
     {% include 'core/widgets/_stats_leader_showcase.html' with stats=current_season_stats|conference_stats:"NFC" show_player_image=True %}
 </div>
+{% endcache %}
 {% endblock %}

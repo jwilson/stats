@@ -1,4 +1,6 @@
 from django import template
+from django.core.cache import cache
+from django.conf import settings
 
 register = template.Library()
 
@@ -11,13 +13,21 @@ def conference_teams(teams, conference):
 
 @register.filter
 def division_teams(teams, division):
-    division_teams = teams.filter(division=division)
+    key = 'divison-teams-{}'.format(division)
+    division_teams = cache.get(key)
+    if not division_teams:
+        division_teams = teams.filter(division=division)
+        cache.set(key, division_teams, timeout=settings.TEAM_STATS_TIMEOUT)
     return division_teams
 
 
 @register.filter
 def conference_stats(stats, conference):
-    conference_stats = stats.filter(team__conference=conference)
+    key = 'conference-teams-{}'.format(conference)
+    conference_stats = cache.get(key)
+    if not conference_stats:
+        conference_stats = stats.filter(team__conference=conference)
+        cache.set(key, conference_stats, timeout=settings.TEAM_STATS_TIMEOUT)
     return conference_stats
 
 
