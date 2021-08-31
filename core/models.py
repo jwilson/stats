@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.cache import cache
@@ -34,6 +35,17 @@ DIVISIONS = (
 )
 
 
+class STATS_CACHE_MIXIN(object):
+    def get_cached_stat(self, key, q, timeout, order_by=None):
+        stats = cache.get(key)
+        if not stats:
+            stats = self.season_stats.filter(q)
+            if order_by:
+                stats = stats.order_by(order_by)
+            cache.set(key, stats, timeout=timeout)
+        return stats
+
+
 class Franchise(models.Model):
     name = models.CharField(max_length=255, help_text="The name of the overall organization")
 
@@ -53,7 +65,7 @@ class Season(models.Model):
         return Season.objects.get(current=True)
 
 
-class Player(models.Model):
+class Player(STATS_CACHE_MIXIN, models.Model):
     name = models.CharField(max_length=255, help_text="The full name of the player.")
     position = models.CharField(max_length=255, choices=POSITIONS, help_text="The player's position")
 
@@ -63,8 +75,30 @@ class Player(models.Model):
     def __str__(self):
         return '{} - {}'.format(self.name, self.position)
 
+    def get_current_season_stats(self):
+        key = 'current-season-player-stats-{}'.format(self.id)
+        if not hasattr(self, '_current_season_stats'):
+            self._current_season_stats = self.get_cached_stat(key, Q(season__current=True), settings.PLAYER_STATS_TIMEOUT)
+            # current_stats = cache.get(key)
+            # if not current_stats:
+            #     current_stats = self.season_stats.filter(season__current=True)
+            #     cache.set(key, current_stats, timeout=settings.PLAYER_STATS_TIMEOUT)
+            # self._current_season_stats = current_stats
+        return self._current_season_stats
 
-class Team(models.Model):
+    def get_previous_seasons_stats(self):
+        key = 'previous-season-player-stats-{}'.format(self.id)
+        if not hasattr(self, '_previous_season_stats'):
+            self._previous_season_stats = self.get_cached_stat(key, Q(season__current=False), settings.PLAYER_STATS_TIMEOUT, order_by='season__start_date')
+            # previous_stats = cache.get(key)
+            # if not previous_stats:
+            #     previous_stats = self.season_stats.filter(season__current=False).order_by('season__start_date')
+            #     cache.set(key, previous_stats, timeout=settings.PLAYER_STATS_TIMEOUT)
+            # self._previous_season_stats = previous_stats
+        return self._previous_season_stats
+
+
+class Team(STATS_CACHE_MIXIN, models.Model):
     name = models.CharField(max_length=255, help_text="The long form team name (ex. Seattle Seahawks)")
     abbreviation = models.CharField(max_length=255, help_text="The abbreviation of the team (ex. SEA)")
     nfl_com_link = models.CharField(max_length=255, help_text="The nfl.com team website address.")
@@ -82,13 +116,15 @@ class Team(models.Model):
         return url
 
     def get_current_season_stats(self):
-        key = 'current-season-stats-{}'.format(self.abbreviation)
-        current_stats = cache.get(key)
-        if not current_stats:
-            current_season = Season.objects.get(current=True)
-            current_stats = self.season_stats.filter(season=current_season)
-            cache.set(key, current_stats, timeout=settings.TEAM_STATS_TIMEOUT)
-        return current_stats
+        key = 'current-season-team-stats-{}'.format(self.id)
+        if not hasattr(self, '_current_season_stats'):
+            self._current_season_stats = self.get_cached_stat(key, Q(season__current=True), settings.TEAM_STATS_TIMEOUT)
+            # current_stats = cache.get(key)
+            # if not current_stats:
+            #     current_stats = self.season_stats.filter(season__current=True)
+            #     cache.set(key, current_stats, timeout=settings.TEAM_STATS_TIMEOUT)
+            # self._current_season_stats = current_stats
+        return self._current_season_stats
 
     def get_current_season_rushing_attempts_leader(self):
         current_stats = self.get_current_season_stats().order_by('-attempts')
@@ -105,8 +141,6 @@ class Team(models.Model):
     def get_current_season_rushing_1st_leader(self):
         current_stats = self.get_current_season_stats().order_by('-first_down')
         return current_stats.first()
-
-
 
 
 class PlayerSeasonStats(models.Model):
