@@ -94,7 +94,8 @@ class PlayersListView(SORT_MIXIN, ListView):
         if player_filter:
             qs = qs.filter(player__name__icontains=player_filter)
         order_by = self.build_order_by()
-        qs = qs.order_by(*order_by)
+        if len(order_by) > 0:
+            qs = qs.order_by(*order_by)
         return qs
 
     def build_order_by(self):
@@ -162,6 +163,8 @@ class ExportView(View):
         if form.is_valid():
             order_by = generate_order_by(form.cleaned_data)
             qs = qs.order_by(*order_by)
+        else:
+            qs = qs.order_by('player__name')
         
         for result in qs:
             td = '*' if result.longest_gains_touchdown else ''
