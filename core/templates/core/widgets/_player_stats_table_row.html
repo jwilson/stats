@@ -4,7 +4,7 @@
     {% if show_player_info %}
     <td><a href="{% url 'core:player-stats-view' player.pk %}">{{ player.name }}</a></td>
     <td>{{ player.position }}</td>
-    {% if show_team_logo %}<td><img src="{{ team.logo_url }}" style="width:25px;" /></td>{% endif %}
+    {% if show_team_logo %}<td><a href="{% url 'core:team-stats-view' team.id %}"><img src="{{ team.logo_url }}" style="width:25px;" /></a></td>{% endif %}
     {% elif show_season_info %}
     <td>{{ stat.season }}</td>
     {% endif %}
