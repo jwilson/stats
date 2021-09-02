@@ -112,6 +112,7 @@ class PlayersListView(SORT_MIXIN, ListView):
         ctx['lng'] = 0
         ctx['yds'] = 0
         ctx['tds'] = 0
+        ctx['export_sort'] = True
         if form.is_valid():
             cleaned_data = form.cleaned_data
             ctx['lng'] = cleaned_data['longest_gains'] 
