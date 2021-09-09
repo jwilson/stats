@@ -2,6 +2,8 @@ from django import template
 from django.core.cache import cache
 from django.conf import settings
 
+from core.models import Team
+
 register = template.Library()
 
 
@@ -13,26 +15,19 @@ def conference_teams(teams, conference):
 # TODO this needs to move to a classmethod on team
 @register.filter
 def division_teams(teams, division):
-    conference = ''
-    if teams:
-        conference = teams.first().conference
-    key = 'divison-teams-{}{}'.format(conference, division)
-    division_teams = cache.get(key)
-    if not division_teams:
-        division_teams = teams.filter(division=division)
-        cache.set(key, division_teams, timeout=settings.TEAM_STATS_TIMEOUT)
+    division_teams = Team.get_conference_division_teams(teams, division)
     return division_teams
 
 
 # TODO this needs to move to a classmethod on team
-@register.filter
-def conference_stats(stats, conference):
-    key = 'conference-teams-{}'.format(conference)
-    conference_stats = cache.get(key)
-    if not conference_stats:
-        conference_stats = stats.filter(team__conference=conference)
-        cache.set(key, conference_stats, timeout=settings.TEAM_STATS_TIMEOUT)
-    return conference_stats
+# @register.filter
+# def conference_stats(stats, conference):
+#     key = 'conference-teams-{}'.format(conference)
+#     conference_stats = cache.get(key)
+#     if not conference_stats:
+#         conference_stats = stats.filter(team__conference=conference)
+#         cache.set(key, conference_stats, timeout=settings.TEAM_STATS_TIMEOUT)
+#     return conference_stats
 
 
 @register.filter

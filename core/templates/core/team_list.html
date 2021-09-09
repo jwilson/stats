@@ -14,9 +14,9 @@
 <div class="row">
     <div class="col-12">
         <h1 class="text-danger border-bottom border-danger">AFC</h1>
-        {% include 'core/widgets/_conference_teams.html' with teams=object_list|conference_teams:'AFC' %}
+        {% include 'core/widgets/_conference_teams.html' with teams=afc_teams %}
         <h1 class="text-primary border-bottom border-primary mt-4">NFC</h1>
-        {% include 'core/widgets/_conference_teams.html' with teams=object_list|conference_teams:'NFC' %}
+        {% include 'core/widgets/_conference_teams.html' with teams=nfc_teams %}
     </div>
 </div>
 {% endcache %}

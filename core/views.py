@@ -56,9 +56,14 @@ class HomeView(TemplateView):
 class TeamsListView(ListView):
     model = Team
 
+    def get_queryset(self):
+        return self.model.objects.none()
+
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         self.request.session['player_filter'] = None
+        ctx['afc_teams'] = self.model.get_conference_teams('AFC')
+        ctx['nfc_teams'] = self.model.get_conference_teams('NFC')
         return ctx
 
 class TeamStatsView(SORT_MIXIN, DetailView):

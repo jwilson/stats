@@ -130,6 +130,28 @@ class Team(STATS_CACHE_MIXIN, models.Model):
     def get_current_season_rushing_1st_leader(self):
         return self._get_season_stats_ordered('-first_down').first()
 
+    @classmethod
+    def get_conference_division_teams(cls, conference_teams, division):
+        conference = ''
+        if conference_teams:
+            conference = conference_teams.first().conference
+        key = 'divison-teams-{}{}'.format(conference, division)
+        division_teams = cache.get(key)
+        if not division_teams:
+            division_teams = conference_teams.filter(division=division)
+            cache.set(key, division_teams, timeout=settings.TEAM_STATS_TIMEOUT)
+        return division_teams
+
+    @classmethod
+    def get_conference_teams(cls, conference):
+        key = 'conference-teams-{}'.format(conference)
+        conference_stats = cache.get(key)
+        if not conference_stats:
+            conference_stats = cls.objects.filter(conference=conference)
+            cache.set(key, conference_stats, timeout=settings.TEAM_STATS_TIMEOUT)
+        return conference_stats
+
+
 
 class PlayerSeasonStats(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='season_stats')

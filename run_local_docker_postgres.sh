@@ -1,0 +1,1 @@
+docker stop postgres && docker container rm postgres && docker run --name postgres --network stats-network -e POSTGRES_HOST_AUTH_METHOD=trust -dit postgres
