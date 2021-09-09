@@ -29,7 +29,7 @@ CONFERENCES = (
 
 DIVISIONS = (
     ('N', _("North")),
-    ('S', _("Soouth")),
+    ('S', _("South")),
     ('E', _("East")),
     ('W', _("West"))
 )
@@ -150,7 +150,6 @@ class Team(STATS_CACHE_MIXIN, models.Model):
             conference_stats = cls.objects.filter(conference=conference)
             cache.set(key, conference_stats, timeout=settings.TEAM_STATS_TIMEOUT)
         return conference_stats
-
 
 
 class PlayerSeasonStats(models.Model):
