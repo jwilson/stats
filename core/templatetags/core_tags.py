@@ -13,7 +13,10 @@ def conference_teams(teams, conference):
 # TODO this needs to move to a classmethod on team
 @register.filter
 def division_teams(teams, division):
-    key = 'divison-teams-{}'.format(division)
+    conference = ''
+    if teams:
+        conference = teams.first().conference
+    key = 'divison-teams-{}{}'.format(conference, division)
     division_teams = cache.get(key)
     if not division_teams:
         division_teams = teams.filter(division=division)
