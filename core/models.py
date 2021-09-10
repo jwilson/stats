@@ -147,12 +147,12 @@ class Team(STATS_CACHE_MIXIN, models.Model):
 
     def test(self):
         cs = self._get_total_rushing_stats()
-        lc = [stat.yards for stat in current_stats]
-        return self.calc(len(cs), lc)
+        lc = [stat.yards for stat in cs]
+        return self.calc(lc)
 
-    def calc(self, l, lc):
+    def calc(self, lc):
         total = sum(lc)
-        return total / l
+        return total / len(lc)
 
     def get_average_rushing_stats(self):
         current_stats = self._get_total_rushing_stats()
