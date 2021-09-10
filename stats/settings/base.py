@@ -4,6 +4,7 @@
 # BASE_DIR = Path(__file__).resolve().parent.parent
 
 import os
+import sys
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
@@ -128,7 +129,11 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 
+
 ONE_DAY = 86400
+#  post coding session
+if 'test' in sys.argv:
+    ONE_DAY = 0
 TEAM_STATS_TIMEOUT = ONE_DAY
 PLAYER_STATS_TIMEOUT = ONE_DAY
 HOME_STATS_TIMEOUT = ONE_DAY

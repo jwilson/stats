@@ -130,6 +130,42 @@ class Team(STATS_CACHE_MIXIN, models.Model):
     def get_current_season_rushing_1st_leader(self):
         return self._get_season_stats_ordered('-first_down').first()
 
+    def _get_total_rushing_stats(self):
+        key = 'rushing-yards-{}{}{}'.format(self.conference, self.division, self.abbreviation)
+        current_stats = cache.get(key)
+        if not current_stats:
+            # current_season = Season.get_current_season()
+            # current_stats = PlayerSeasonStats.objects.filter(team=self, season=current_season)
+            # post coding session
+            current_stats = self.season_stats.filter(season__current=True)
+            cache.set(key, current_stats, timeout=settings.TEAM_STATS_TIMEOUT)
+        return current_stats
+
+    def get_total_rushing_stats(self):
+        current_stats = self._get_total_rushing_stats()
+        return sum([stat.yards for stat in current_stats])
+
+    def test(self):
+        cs = self._get_total_rushing_stats()
+        lc = [stat.yards for stat in current_stats]
+        return self.calc(len(cs), lc)
+
+    def calc(self, l, lc):
+        total = sum(lc)
+        return total / l
+
+    def get_average_rushing_stats(self):
+        current_stats = self._get_total_rushing_stats()
+        total = sum([stat.yards for stat in current_stats])
+        num = len(current_stats)
+        return total / num
+
+    def get_avg_avg_stats(self):
+        current_stats = self._get_total_rushing_stats()
+        total = sum([stat.average for stat in current_stats])
+        num = len(current_stats)
+        return total / num
+        
     @classmethod
     def get_conference_division_teams(cls, conference_teams, division):
         conference = ''
@@ -165,7 +201,7 @@ class PlayerSeasonStats(models.Model):
     longest_gains = models.IntegerField(default=0)
     longest_gains_touchdown = models.BooleanField(default=False)
     first_down = models.PositiveIntegerField(default=0)
-    first_down_conversion = models.FloatField()
+    first_down_conversion = models.FloatField(default=0)
     twenty_plus = models.PositiveIntegerField(default=0)
     forty_plus = models.PositiveIntegerField(default=0)
     fumbles = models.PositiveIntegerField(default=0)

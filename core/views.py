@@ -66,6 +66,18 @@ class TeamsListView(ListView):
         ctx['nfc_teams'] = self.model.get_conference_teams('NFC')
         return ctx
 
+
+class TeamRushingStatsView(ListView):
+    model = Team
+    template_name = 'core/team_rushing_stats.html'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.order_by('name')
+        return qs
+
+
+
 class TeamStatsView(SORT_MIXIN, DetailView):
     model = Team
 
